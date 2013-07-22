@@ -30,4 +30,8 @@ int ktimer_event_schedule(uint32_t ticks, ktimer_event_t *kte);
 int ktimer_event_create(uint32_t ticks, ktimer_event_handler_t handler, void *data);
 void ktimer_event_handler();
 
+#ifdef CONFIG_KTIMER_TICKLESS
+void ktimer_enter_tickless();
+#endif /* CONFIG_KTIMER_TICKLESS */
+
 #endif /* KTIMER_H_ */
