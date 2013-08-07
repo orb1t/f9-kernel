@@ -26,6 +26,7 @@ extern void kdb_dump_softirq();
 extern void kdb_dump_threads();
 extern void kdb_dump_mempool();
 extern void kdb_dump_as();
+extern void kdb_show_tickless_verify();
 
 struct kdb_t kdb_functions[] =
 {
@@ -70,6 +71,12 @@ struct kdb_t kdb_functions[] =
 		.name = "AS",
 		.menuentry = "dump address spaces",
 		.function = kdb_dump_as
+	},
+	{
+		.option = 'v',
+		.name = "TICKLESS VERIFY",
+		.menuentry = "show tickless scheduling stat",
+		.function = kdb_show_tickless_verify
 	},
 	/* Insert KDB functions here */
 };
