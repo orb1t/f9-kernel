@@ -23,7 +23,8 @@ static inline void *
 l4_kernel_interface(unsigned int *api_version, unsigned int *api_flags,
 		   unsigned int *kernel_id)
 {
-	return (void *)L4_KIP_ADDRESS;
+	// TODO
+	return NULL;
 }
 
 typedef unsigned int (*__l4_thread_switch_t)(u32);
