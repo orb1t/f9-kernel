@@ -9,11 +9,9 @@
 
 #include L4LIB_INC_ARCH(types.h)
 #include L4LIB_INC_ARCH(utcb.h)
-#include <l4/generic/space.h>
-#include <l4/api/space.h>
-#include <l4/api/kip.h>
-#include <l4/api/ipc.h>
-#include <l4/api/thread.h>
+#include <l4/kip.h>
+#include <l4/ipc.h>
+#include <l4/thread.h>
 
 struct task_ids {
 	l4id_t tid;
