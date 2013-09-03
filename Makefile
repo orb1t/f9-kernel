@@ -35,6 +35,7 @@ includes = \
 	board/$(BOARD) \
 	include \
 	include/platform \
+	user/lib/libl4/include \
 	$(dirs) $(out)
 $(eval BOARD_$(BOARD)=y)
 
