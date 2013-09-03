@@ -4,75 +4,75 @@
 #ifndef __ARM_UTCB_H__
 #define __ARM_UTCB_H__
 
-#define USER_UTCB_REF           0xFF000050
-#define L4_KIP_ADDRESS		0xFF000000
-#define UTCB_KIP_OFFSET		0x50
-
-#ifndef __ASSEMBLY__
-#include <l4lib/types.h>
-#include <l4/macros.h>
-#include <l4/lib/math.h>
-#include INC_GLUE(message.h)
-#include INC_GLUE(memory.h)
-#include <string.h>
-#include <stdio.h>
-#include L4LIB_INC_SUBARCH(utcb.h)
-
-/*
- * See kernel glue/arch/message.h for utcb details
- */
-extern struct kip *kip;
-
-
-
-
 /* Functions to read/write utcb registers */
 static inline unsigned int read_mr(int offset)
 {
-	if (offset < MR_TOTAL)
-		return l4_get_utcb()->mr[offset];
-	else
-		return l4_get_utcb()->mr_rest[offset - MR_TOTAL];
+	unsigned int result;
+
+	switch(offset) {
+		case 0:
+			__asm__ __volatile__ ("str r4, %[output]\n": [output] "=m" (result));
+			break;
+		case 1:
+			__asm__ __volatile__ ("str r5, %[output]\n": [output] "=m" (result));
+			break;
+		case 2:
+			__asm__ __volatile__ ("str r6, %[output]\n": [output] "=m" (result));
+			break;
+		case 3:
+			__asm__ __volatile__ ("str r7, %[output]\n": [output] "=m" (result));
+			break;
+		case 4:
+			__asm__ __volatile__ ("str r8, %[output]\n": [output] "=m" (result));
+			break;
+		case 5:
+			__asm__ __volatile__ ("str r9, %[output]\n": [output] "=m" (result));
+			break;
+		case 6:
+			__asm__ __volatile__ ("str r10, %[output]\n": [output] "=m" (result));
+			break;
+		case 7:
+			__asm__ __volatile__ ("str r11, %[output]\n": [output] "=m" (result));
+			break;
+		default:
+			// TODO: rest MRs
+			;
+	}
+
+	return result;
 }
 
 static inline void write_mr(unsigned int offset, unsigned int val)
 {
-	if (offset < MR_TOTAL)
-		l4_get_utcb()->mr[offset] = val;
-	else
-		l4_get_utcb()->mr_rest[offset - MR_TOTAL] = val;
+	switch(offset) {
+		case 0:
+			__asm__ __volatile__ ("ldr r4, %0\n":: "m" (val));
+			break;
+		case 1:
+			__asm__ __volatile__ ("ldr r5, %0\n":: "m" (val));
+			break;
+		case 2:
+			__asm__ __volatile__ ("ldr r6, %0\n":: "m" (val));
+			break;
+		case 3:
+			__asm__ __volatile__ ("ldr r7, %0\n":: "m" (val));
+			break;
+		case 4:
+			__asm__ __volatile__ ("ldr r8, %0\n":: "m" (val));
+			break;
+		case 5:
+			__asm__ __volatile__ ("ldr r9, %0\n":: "m" (val));
+			break;
+		case 6:
+			__asm__ __volatile__ ("ldr r10, %0\n":: "m" (val));
+			break;
+		case 7:
+			__asm__ __volatile__ ("ldr r11, %0\n":: "m" (val));
+			break;
+		default:
+			// TODO: rest MRs
+			;
+	}
 }
-
-
-static inline void *utcb_full_buffer()
-{
-	return &l4_get_utcb()->mr_rest[0];
-}
-
-static inline char *utcb_full_strcpy_from(const char *src)
-{
-	return strncpy((char *)&l4_get_utcb()->mr_rest[0], src,
-		       L4_UTCB_FULL_BUFFER_SIZE);
-}
-
-static inline void *utcb_full_memcpy_from(const char *src, int size)
-{
-	return memcpy(&l4_get_utcb()->mr_rest[0], src,
-		      min(size, L4_UTCB_FULL_BUFFER_SIZE));
-}
-
-static inline char *utcb_full_strcpy_to(char *dst)
-{
-	return strncpy(dst, (char *)&l4_get_utcb()->mr_rest[0],
-		       L4_UTCB_FULL_BUFFER_SIZE);
-}
-
-static inline void *utcb_full_memcpy_to(char *dst, int size)
-{
-	return memcpy(dst, &l4_get_utcb()->mr_rest[0],
-		      min(size, L4_UTCB_FULL_BUFFER_SIZE));
-}
-
-#endif /* !__ASSEMBLY__ */
 
 #endif /* __ARM_UTCB_H__ */
