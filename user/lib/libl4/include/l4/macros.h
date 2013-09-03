@@ -12,7 +12,6 @@
 #define INC_ARCH(x)             <l4/arch/__ARCH__/x>
 #define INC_SUBARCH(x)		<l4/arch/__ARCH__/__SUBARCH__/x>
 #define INC_CPU(x)		<l4/arch/__ARCH__/__SUBARCH__/__CPU__/x>
-#define INC_PLAT(x)             <l4/platform/__PLATFORM__/x>
 #define INC_API(x)              <l4/api/x>
 #define INC_GLUE(x)             <l4/glue/__ARCH__/x>
 
