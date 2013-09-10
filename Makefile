@@ -38,6 +38,8 @@ includes = \
 	$(dirs) $(out)
 $(eval BOARD_$(BOARD)=y)
 
+includes-user = user/include
+
 # Read configurations about system features and characteristics
 include mk/config.mk
 
