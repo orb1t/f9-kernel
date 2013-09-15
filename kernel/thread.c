@@ -51,6 +51,7 @@ int thread_count;
  */
 
 volatile tcb_t *current; 			/* Currently on CPU */
+void *current_utcb __USER_DATA;
 
 /* KIP declarations */
 static fpage_t *kip_fpage, *kip_extra_fpage;
@@ -324,6 +325,7 @@ void thread_switch(tcb_t *thr)
 	assert(thread_isrunnable(thr));
 
 	current = thr;
+	current_utcb = thr->utcb;
 	if (current->as)
 		as_setup_mpu(current->as, current->ctx.sp);
 }
