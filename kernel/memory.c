@@ -180,6 +180,7 @@ void as_setup_mpu(as_t *as, memptr_t sp)
 {
 	fpage_t *mpu[8];
 	fpage_t *fp = as->first;
+	fpage_t *fpprev = NULL;
 	int i = 0, j = 7, k = 0;
 
 	/*
@@ -192,12 +193,17 @@ void as_setup_mpu(as_t *as, memptr_t sp)
 				fp == as->lru ||
 				addr_in_fpage(sp, fp)) {
 			if (k < 8)
-				mpu[k++] = fp;
+				if (fpprev == NULL || FPAGE_BASE(fp) != FPAGE_BASE(fpprev) ||
+						FPAGE_SIZE(fp) > FPAGE_SIZE(fpprev))
+					mpu[k++] = fp;
 		}
 		else {
 			if (j >= k)
-				mpu[j--] = fp;
+				if (fpprev == NULL || FPAGE_BASE(fp) != FPAGE_BASE(fpprev) ||
+						FPAGE_SIZE(fp) > FPAGE_SIZE(fpprev))
+					mpu[j--] = fp;
 		} /* Non-always fpage mapping */
+		fpprev = fp;
 		fp = fp->as_next;
 	}
 
@@ -413,13 +419,6 @@ void kdb_dump_as(void)
 				fpage->fpage.base, fpage->fpage.shift);
 			fpage = fpage->as_next;
 			++nl;
-
-			if (nl == 12) {
-				dbg_puts("Press any key...\n");
-				while (dbg_getchar() == 0)
-					/* */ ;
-				nl = 0;
-			}
 		}
 	}
 }
